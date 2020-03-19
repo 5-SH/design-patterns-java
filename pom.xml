@@ -20,7 +20,6 @@
 	</build>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
@@ -31,5 +30,11 @@
 			<artifactId>javatuples</artifactId>
 			<version>1.2</version>
 		</dependency>
+    <dependency>
+        <groupId>org.reflections</groupId>
+        <artifactId>reflections</artifactId>
+        <version>0.9.10</version>
+    </dependency>
 	</dependencies>
+
 </project>
