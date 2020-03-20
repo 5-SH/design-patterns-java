@@ -30,10 +30,10 @@ class LoggingHandler implements InvocationHandler {
 		this.target = target;
 	}
 	
-	// proxy instance ÀÇ method ¸¦ È£ÃâÇÏ°í °á°ú¸¦ ¸®ÅÏÇÑ´Ù.
-	// proxy parameter : method °¡ È£ÃâµÈ proxy instance
-	// method parameter : proxy instance ¸¦ ÅëÇØ È£ÃâµÈ method ¿Í ÀÏÄ¡ÇÏ´Â method instance
-	// args parameter : method parameter ÀÇ arguments µé
+	// proxy instance ì˜ method ë¥¼ í˜¸ì¶œí•˜ê³  ê²°ê³¼ë¥¼ ë¦¬í„´í•œë‹¤.
+	// proxy parameter : method ê°€ í˜¸ì¶œëœ proxy instance
+	// method parameter : proxy instance ë¥¼ í†µí•´ í˜¸ì¶œëœ method ì™€ ì¼ì¹˜í•˜ëŠ” method instance
+	// args parameter : method parameter ì˜ arguments ë“¤
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		String name = method.getName();
@@ -46,25 +46,25 @@ class LoggingHandler implements InvocationHandler {
 	
 }
 
-// ±âÁ¸¿¡ proxy °¡ ÇÊ¿äÇÑ class ¸¶´Ù »õ·Î¿î proxy class ¸¦ Á¤ÀÇ ÇØ¾ßÇÔ.
-// proxy ±â´ÉÀÌ ÇÊ¿ä ¾ø´õ¶óµµ target class ÀÇ interface ¸¦ ±¸ÇöÇÏ°Å³ª À§ÀÓÇØ¾ßÇÔ.
-// -> Dynamic proxy ·Î ÇØ°á, dynamic proxy ´Â
-// ·±Å¸ÀÓ ½Ã µ¿ÀûÀ¸·Î ¸¸µé¾îÁö´Â proxy
-// java refletion ±â´ÉÀ» ÀÌ¿ëÇØ ÇÁ·Ï½Ã »ı¼º,
-// target interface ¿Í µ¿ÀÏÇÑ ÇüÅÂ·Î »ı¼º,
-// ÆÑÅä¸® ºóÀ¸·Î »ı¼º °¡´É
+// ê¸°ì¡´ì— proxy ê°€ í•„ìš”í•œ class ë§ˆë‹¤ ìƒˆë¡œìš´ proxy class ë¥¼ ì •ì˜ í•´ì•¼í•¨.
+// proxy ê¸°ëŠ¥ì´ í•„ìš” ì—†ë”ë¼ë„ target class ì˜ interface ë¥¼ êµ¬í˜„í•˜ê±°ë‚˜ ìœ„ì„í•´ì•¼í•¨.
+// -> Dynamic proxy ë¡œ í•´ê²°, dynamic proxy ëŠ”
+// ëŸ°íƒ€ì„ ì‹œ ë™ì ìœ¼ë¡œ ë§Œë“¤ì–´ì§€ëŠ” proxy
+// java refletion ê¸°ëŠ¥ì„ ì´ìš©í•´ í”„ë¡ì‹œ ìƒì„±,
+// target interface ì™€ ë™ì¼í•œ í˜•íƒœë¡œ ìƒì„±,
+// íŒ©í† ë¦¬ ë¹ˆìœ¼ë¡œ ìƒì„± ê°€ëŠ¥
 public class DynamicProxy {
 	@SuppressWarnings("unchecked")
 	public static <T> T withLogging(T target, Class<T> itf) {
-		// dynamic proxy instance ¸¦ ¸¸µé±â À§ÇÑ static method
-		// target class °¡ ¸¸µé¾îÁú ¶§ itf interface µéÀ» ±¸ÇöÇÑ´Ù. 
-		// °¢ proxy °´Ã¼´Â InvocationHandler ±¸ÇöÃ¼¿Í ¿¬°áµÈ´Ù. 
+		// dynamic proxy instance ë¥¼ ë§Œë“¤ê¸° ìœ„í•œ static method
+		// target class ê°€ ë§Œë“¤ì–´ì§ˆ ë•Œ itf interface ë“¤ì„ êµ¬í˜„í•œë‹¤. 
+		// ê° proxy ê°ì²´ëŠ” InvocationHandler êµ¬í˜„ì²´ì™€ ì—°ê²°ëœë‹¤. 
 		return (T) Proxy.newProxyInstance(itf.getClassLoader(), new Class<?>[] { itf }, new LoggingHandler(target));
 	}
 	public static void main(String[] args) {
 		People p = new People();
 		Human logged = withLogging(p, Human.class);
-		// proxy instance ¸¦ ÅëÇØ È£ÃâµÈ method ´Â invocation handler ÀÇ invoke method ¿¡ ºÙ´Â´Ù.
+		// proxy instance ë¥¼ í†µí•´ í˜¸ì¶œëœ method ëŠ” invocation handler ì˜ invoke method ì— ë¶™ëŠ”ë‹¤.
 		logged.talk();
 		logged.walk();
 		logged.walk();
