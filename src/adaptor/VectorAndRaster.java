@@ -10,64 +10,70 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 
 class Point {
-	int x;
-	int y;
+  int x;
+  int y;
 
-	public Point(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
+  public Point(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
 
-	@Override
-	public String toString() {
-		return "Point [x=" + x + ", y=" + y + "]";
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
-		
-		Point point = (Point) obj;
-		if (this.x != point.x) return false;
-		return this.y == point.y;
-	}
-	
-	@Override
-	public int hashCode() {
-		int result = this.x;
-		result = 31 * result + this.y;
-		return result;
-	}
+  @Override
+  public String toString() {
+    return "Point [x=" + x + ", y=" + y + "]";
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null || getClass() != obj.getClass())
+      return false;
+
+    Point point = (Point) obj;
+    if (this.x != point.x)
+      return false;
+    return this.y == point.y;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = this.x;
+    result = 31 * result + this.y;
+    return result;
+  }
 }
 
 class Line {
-	Point start;
-	Point end;
+  Point start;
+  Point end;
 
-	public Line(Point start, Point end) {
-		this.start = start;
-		this.end = end;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || this.getClass() != obj.getClass()) return false;
-		
-		Line line = (Line) obj;
-		
-		if (!start.equals(line.start)) return false;
-		
-		return end.equals(line.end);
-	}
-	
-	@Override
-	public int hashCode() {
-		int result = start.hashCode();
-		result = 31 * result + end.hashCode();
-		return result;
-	}
+  public Line(Point start, Point end) {
+    this.start = start;
+    this.end = end;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null || this.getClass() != obj.getClass())
+      return false;
+
+    Line line = (Line) obj;
+
+    if (!start.equals(line.start))
+      return false;
+
+    return end.equals(line.end);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = start.hashCode();
+    result = 31 * result + end.hashCode();
+    return result;
+  }
 }
 
 class VectorObject extends ArrayList<Line> {
@@ -75,91 +81,94 @@ class VectorObject extends ArrayList<Line> {
 
 class VectorRectangle extends VectorObject {
 
-	public VectorRectangle(int x, int y, int width, int height) {
-		add(new Line(new Point(x, y), new Point(x + width, y)));
-		add(new Line(new Point(x + width, y), new Point(x + width, y + height)));
-		add(new Line(new Point(x, y), new Point(x, y + height)));
-		add(new Line(new Point(x, y + height), new Point(x + width, y + height)));
-	}
+  public VectorRectangle(int x, int y, int width, int height) {
+    add(new Line(new Point(x, y), new Point(x + width, y)));
+    add(new Line(new Point(x + width, y), new Point(x + width, y + height)));
+    add(new Line(new Point(x, y), new Point(x, y + height)));
+    add(new Line(new Point(x, y + height), new Point(x + width, y + height)));
+  }
 }
 
 class LineToPointAdapter implements Iterable<Point> {
 
-	private static int count = 0;
-	private static Map<Integer, List<Point>> cache = new HashMap<>();
-	private int hash;
-	
-	public LineToPointAdapter(Line line) {
+  private static int count = 0;
+  private static Map<Integer, List<Point>> cache = new HashMap<>();
+  private int hash;
 
-		hash = line.hashCode();
-		if (cache.get(hash) != null) {
-			return;
-		}
-		
-		System.out.println(String.format("%d: Generating points for line [%d,%d]-[%d,%d] (with caching)", ++count,
-				line.start.x, line.start.y, line.end.x, line.end.y));
+  public LineToPointAdapter(Line line) {
 
-		int left = Math.min(line.start.x, line.end.x);
-		int right = Math.max(line.start.x, line.end.x);
-		int top = Math.min(line.start.y, line.end.y);
-		int bottom = Math.max(line.start.y, line.end.y);
+    hash = line.hashCode();
+    if (cache.get(hash) != null) {
+      return;
+    }
 
-		int dx = right - left;
-		int dy = line.end.y - line.start.y;
+    System.out.println(String.format("%d: Generating points for line [%d,%d]-[%d,%d] (with caching)", ++count,
+        line.start.x, line.start.y, line.end.x, line.end.y));
 
-		ArrayList<Point> points = new ArrayList<Point>();
-		
-		if (dx == 0) {
-			for (int y = top; y <= bottom; ++y) {
-				points.add(new Point(left, y));
-			}
-		} else if (dy == 0) {
-			for (int x = left; x <= right; ++x) {
-				points.add(new Point(x, top));
-			}
-		}
-		
-		cache.put(hash, points);
-	}
+    int left = Math.min(line.start.x, line.end.x);
+    int right = Math.max(line.start.x, line.end.x);
+    int top = Math.min(line.start.y, line.end.y);
+    int bottom = Math.max(line.start.y, line.end.y);
 
-	@Override
-	public Iterator<Point> iterator() {
-		return cache.get(hash).iterator();
-	}
-	@Override
-	public Spliterator<Point> spliterator() {
-		return cache.get(hash).spliterator();
-	}
-	@Override
-	public void forEach(Consumer<? super Point> action) {
-		cache.get(hash).forEach(action);
-	}
+    int dx = right - left;
+    int dy = line.end.y - line.start.y;
+
+    ArrayList<Point> points = new ArrayList<Point>();
+
+    if (dx == 0) {
+      for (int y = top; y <= bottom; ++y) {
+        points.add(new Point(left, y));
+      }
+    } else if (dy == 0) {
+      for (int x = left; x <= right; ++x) {
+        points.add(new Point(x, top));
+      }
+    }
+
+    cache.put(hash, points);
+  }
+
+  @Override
+  public Iterator<Point> iterator() {
+    return cache.get(hash).iterator();
+  }
+
+  @Override
+  public Spliterator<Point> spliterator() {
+    return cache.get(hash).spliterator();
+  }
+
+  @Override
+  public void forEach(Consumer<? super Point> action) {
+    cache.get(hash).forEach(action);
+  }
 }
-
 
 public class VectorAndRaster {
 
-	private static final List<VectorObject> vectorObjects = new ArrayList<>(
-			Arrays.asList(new VectorRectangle(1, 1, 10, 10), new VectorRectangle(3, 3, 6, 6)));
+  private static final List<VectorObject> vectorObjects = new ArrayList<>(
+      Arrays.asList(new VectorRectangle(1, 1, 10, 10), new VectorRectangle(3, 3, 6, 6)));
 
-	// ¼±À» ±×¸®´Â API °¡ ¾Æ·¡¿Í °°ÀÌ drawPoint ¸¸ ÁÖ¾îÁö°Ô µÈ´Ù¸é LineÀ» Point·Î Adapt ÇØÁà¾ß ÇÑ´Ù.
-	// VectorObject´Â LineÀ¸·Î ±¸¼ºµÇ¾î ÀÖ±â ¶§¹®
-	public static void drawPoint(Point p) {
-		System.out.print(".");
-	}
+  // ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ API ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ drawPoint ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È´Ù¸ï¿½ Lineï¿½ï¿½ Pointï¿½ï¿½ Adapt
+  // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
+  // VectorObjectï¿½ï¿½ Lineï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½ï¿½
+  public static void drawPoint(Point p) {
+    System.out.print(".");
+  }
 
-	private static void draw() {
-		for (VectorObject vector : vectorObjects) {
-			for (Line line : vector) {
-				LineToPointAdapter adapter = new LineToPointAdapter(line);
-				adapter.forEach(VectorAndRaster::drawPoint);
-				System.out.println("");
-			}
-		}
-	}
-	public static void main(String[] args) {
-		draw();
-		// cache ¾øÀÌ adaptor¸¦ ±¸ÇöÇÏ¸é °°Àº lineÀ» µÎ ¹ø ±×¸®´Â Áßº¹ÀÌ ¹ß»ýÇÑ´Ù.
-		draw();
-	}
+  private static void draw() {
+    for (VectorObject vector : vectorObjects) {
+      for (Line line : vector) {
+        LineToPointAdapter adapter = new LineToPointAdapter(line);
+        adapter.forEach(VectorAndRaster::drawPoint);
+        System.out.println("");
+      }
+    }
+  }
+
+  public static void main(String[] args) {
+    draw();
+    // cache ï¿½ï¿½ï¿½ï¿½ adaptorï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ lineï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ßºï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ñ´ï¿½.
+    draw();
+  }
 }

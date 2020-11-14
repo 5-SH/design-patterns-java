@@ -50,6 +50,8 @@ class SupplierMapper {
     String nameArg = rs.get(0).toString();
     SupplierVL result = new SupplierVL(id, nameArg);
     result.setProducts(new VirtualList(new ProductLoader(id)));
+
+    return result;
   }
 }
 

@@ -2,79 +2,97 @@ package init;
 
 // Interface Segregation Principle = how to split interfae into small interface
 
-class Document {}
+class Document {
+}
 
 interface Machine {
-	 void print(Document d);
-	 void fax(Document d);
-	 void scan(Document d) throws Exception;
+  void print(Document d);
+
+  void fax(Document d);
+
+  void scan(Document d) throws Exception;
 }
 
 class MultiFunctionPrinter implements Machine {
-	@Override
-	public void print(Document d) {}
-	@Override
-	public void fax(Document d) {}
-	@Override
-	public void scan(Document d) {}
+  @Override
+  public void print(Document d) {
+  }
+
+  @Override
+  public void fax(Document d) {
+  }
+
+  @Override
+  public void scan(Document d) {
+  }
 }
 
 class OldFunctionPrinter implements Machine {
-	@Override
-	public void print(Document d) {}
-	@Override
-	public void fax(Document d) {}
-	@Override
-	public void scan(Document d) {}
+  @Override
+  public void print(Document d) {
+  }
+
+  @Override
+  public void fax(Document d) {
+  }
+
+  @Override
+  public void scan(Document d) {
+  }
 }
 
-// Á¦°øÇÏÁö ¾Ê´Â fax, scan ±â´É¿¡ ´ëÇØ interface ÇÏ°Ô µÇ¸é fax, scan ±â´ÉÀÌ ¿Ö µ¿ÀÛÇÏÁö ¾Ê´ÂÁö È¥¶õÀÌ ¿Ã ¼ö ÀÖÀ½.
-// interface ¸¦ ¹üÁÖ ¸¶´Ù ³ª´²¾ß ÇÔ
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ fax, scan ï¿½ï¿½É¿ï¿½ ï¿½ï¿½ï¿½ï¿½ interface ï¿½Ï°ï¿½ ï¿½Ç¸ï¿½ fax, scan ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ï¿½ï¿½ È¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+// interface ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 
 interface Printer {
-	void print(Document d);
+  void print(Document d);
 }
 
 interface Scanner {
-	void scan(Document d);
+  void scan(Document d);
 }
 
 class JustAPrinter implements Printer {
-	@Override
-	public void print(Document d) {
-	}
+  @Override
+  public void print(Document d) {
+  }
 }
 
 class Photocopier implements Printer, Scanner {
-	@Override
-	public void scan(Document d) {}
-	
-	@Override
-	public void print(Document d) {}
+  @Override
+  public void scan(Document d) {
+  }
+
+  @Override
+  public void print(Document d) {
+  }
 }
 
-// ¹üÁÖ¸¶´Ù interface ¸¦ ³ª´³´Âµ¥ ¿©·¯°¡Áö ±â´ÉÀ» ÇÊ¿ä·Î ÇÏ¸é implements ¸¦ °è¼Ó Ãß°¡ÇØ¾ß ÇÏ´Â°¡
+// ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ interface ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ ï¿½Ï¸ï¿½ implements ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ø¾ï¿½
+// ï¿½Ï´Â°ï¿½
 
-interface MultiFunctionDevice extends Printer, Scanner {}
+interface MultiFunctionDevice extends Printer, Scanner {
+}
 
 class MultiFunctionMachine implements MultiFunctionDevice {
-	private Printer printer;
-	private Scanner scanner;
-	
-	public void MultiFunctionMachine(Printer printer, Scanner scanner) {
-		this.printer = printer;
-		this.scanner = scanner;
-	}
-	
-	@Override
-	public void print(Document d) {
-		printer.print(d);
-	}
-	
-	@Override
-	public void scan(Document d) {
-		scanner.scan(d);
-	}
+  private Printer printer;
+  private Scanner scanner;
+
+  public void MultiFunctionMachine(Printer printer, Scanner scanner) {
+    this.printer = printer;
+    this.scanner = scanner;
+  }
+
+  @Override
+  public void print(Document d) {
+    printer.print(d);
+  }
+
+  @Override
+  public void scan(Document d) {
+    scanner.scan(d);
+  }
 }
 
 public class Demo4 {

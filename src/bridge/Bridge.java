@@ -5,100 +5,100 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-// ±â´É°ú ±¸ÇöÀ» º°µµÀÇ Å¬·¡½º·Î Á¤ÀÇÇØ¼­ ¼­·Î¸¦ ºÐ¸®ÇÏ´Â ¹æ¹ý
-// »ó¼ÓÀº °ß°íÇÑ °áÇÕ, À§ÀÓÀº ´À½¼ÇÑ °áÇÕ
-// ±¸Çö Å¬·¡½º¿Í ±â´É Å¬·¡½º¸¦ ³ª´©°í ±¸Çö Å¬·¡½ºÀÇ method¸¦ ±â´É Å¬·¡½º¿¡ À§ÀÓÇØ¼­ »ç¿ë
-// Cartesian product complexity explosion À» ¸·´Â´Ù
-// entity explosion À» ÇÇÇÑ´Ù
-// implementation ¿¡¼­ interface decouple ÇÏ´Â ¸ÞÄ¿´ÏÁò
+// ï¿½ï¿½É°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½Î¸ï¿½ ï¿½Ð¸ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ methodï¿½ï¿½ ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½
+// Cartesian product complexity explosion ï¿½ï¿½ ï¿½ï¿½ï¿½Â´ï¿½
+// entity explosion ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½
+// implementation ï¿½ï¿½ï¿½ï¿½ interface decouple ï¿½Ï´ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
 
-// (±â´É Å¬·¡½º) Shape -> Circle, Square
-// (±¸Çö Å¬·¡½º) Rendering -> Vector, Raster
+// (ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½) Shape -> Circle, Square
+// (ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½) Rendering -> Vector, Raster
 
-// bridge ¾øÀÌ ±¸¼ºÇÏ¸é 4°³ÀÇ Å¬·¡½º°¡ ÇÊ¿ä
+// bridge ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ 4ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
 // VectorCircleRenderer, VectorSquareRenderer....
-// Rendering ÀÌ Ãß°¡µÇ¸é 8°³ ÇÊ¿ä -> Bridge ÆÐÅÏÀÌ ÇÊ¿ä
-
+// Rendering ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ç¸ï¿½ 8ï¿½ï¿½ ï¿½Ê¿ï¿½ -> Bridge ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
 
 interface Renderer {
-	void renderCircle(float radius);
+  void renderCircle(float radius);
 }
 
 class VectorRenderer implements Renderer {
-	@Override
-	public void renderCircle(float radius) {
-		System.out.println("Drawing a circle of radius " + radius);
-	}
+  @Override
+  public void renderCircle(float radius) {
+    System.out.println("Drawing a circle of radius " + radius);
+  }
 }
 
 class RasterRenderer implements Renderer {
-	@Override
-	public void renderCircle(float radius) {
-		System.out.println("Drawing pixels for a circle of radius " + radius);
-	}
+  @Override
+  public void renderCircle(float radius) {
+    System.out.println("Drawing pixels for a circle of radius " + radius);
+  }
 }
 
 abstract class Shape {
-	// Bridge
-	protected Renderer renderer;
-	
-	public Shape(Renderer renderer) {
-		this.renderer = renderer;
-	}
-	
-	public abstract void draw();
-	public abstract void resize(float factor);
+  // Bridge
+  protected Renderer renderer;
+
+  public Shape(Renderer renderer) {
+    this.renderer = renderer;
+  }
+
+  public abstract void draw();
+
+  public abstract void resize(float factor);
 }
 
 class Circle extends Shape {
-	
-	public float radius;
-	
-	@Inject
-	public Circle(Renderer renderer, float radius) {
-		super(renderer);
-		this.radius = radius;
-	}
 
-	@Override
-	public void draw() {
-		renderer.renderCircle(radius);
-	}
+  public float radius;
 
-	@Override
-	public void resize(float factor) {
-		radius *= factor;
-	}
-	
+  @Inject
+  public Circle(Renderer renderer, float radius) {
+    super(renderer);
+    this.radius = radius;
+  }
+
+  @Override
+  public void draw() {
+    renderer.renderCircle(radius);
+  }
+
+  @Override
+  public void resize(float factor) {
+    radius *= factor;
+  }
+
 }
 
-// Google Guice ¸¦ ÀÌ¿ëÇØ¼­ protected Renderer renderer bridge ´ë½Å¿¡
-// Dependency Injection À¸·Î Ã³¸®ÇÏ´Â ¹æ¹ý
+// Google Guice ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ protected Renderer renderer bridge ï¿½ï¿½Å¿ï¿½
+// Dependency Injection ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
 class ShapeModule extends AbstractModule {
-	@Override
-	  protected void configure() {
-	    bind(Renderer.class).to(VectorRenderer.class);
-	  }
+  @Override
+  protected void configure() {
+    bind(Renderer.class).to(VectorRenderer.class);
+  }
 }
 
 public class Bridge {
-	
-	public static void main(String[] args) {
-		
-		RasterRenderer raster = new RasterRenderer();
-		VectorRenderer vector = new VectorRenderer();
-		
-		Circle circle = new Circle(vector, 5);
-		
-		circle.draw();
-		circle.resize(2);
-		circle.draw();
-		
-		Injector injector = Guice.createInjector(new ShapeModule());
-	    Circle instance = injector.getInstance(Circle.class);
-	    instance.radius = 3;
-	    instance.draw();
-	    instance.resize(2);
-	    instance.draw();
-	}
+
+  public static void main(String[] args) {
+
+    RasterRenderer raster = new RasterRenderer();
+    VectorRenderer vector = new VectorRenderer();
+
+    Circle circle = new Circle(vector, 5);
+
+    circle.draw();
+    circle.resize(2);
+    circle.draw();
+
+    Injector injector = Guice.createInjector(new ShapeModule());
+    Circle instance = injector.getInstance(Circle.class);
+    instance.radius = 3;
+    instance.draw();
+    instance.resize(2);
+    instance.draw();
+  }
 }

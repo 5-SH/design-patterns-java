@@ -7,36 +7,36 @@ import java.util.function.Function;
 
 // as-is
 class User {
-	private String fullName;
+  private String fullName;
 
-	public User(String fullName) {
-		this.fullName = fullName;
-	}
+  public User(String fullName) {
+    this.fullName = fullName;
+  }
 }
 
 // to-be flyweight
 class User2 {
-	static List<String> strings = new ArrayList<>();
-	private int [] names;
-	
-	public User2(String fullName) {
-		Function<String, Integer> getOrAdd = (String s) -> {
-			int idx = strings.indexOf(s);
-			if (idx != -1) return idx;
-			else {
-				strings.add(s);
-				return strings.size() - 1;
-			}
-		};
-		
-		// StreamÀº ÀÚ¹Ù 8ºÎÅÍ Ãß°¡µÈ ±â´ÉÀ¸·Î ÄÃ·º¼Ç, ¹è¿­µîÀÇ ÀúÀå ¿ä¼Ò¸¦ ÇÏ³ª¾¿ ÂüÁ¶ÇÏ¸ç 
-		// ÇÔ¼öÇü ÀÎÅÍÆäÀÌ½º(¶÷´Ù½Ä)¸¦ Àû¿ëÇÏ¸ç ¹Ýº¹ÀûÀ¸·Î Ã³¸®ÇÒ ¼ö ÀÖµµ·Ï ÇØÁÖ´Â ±â´É
-		// mapXXX ÇÔ¼öµéÀº ÇØ´ç Å¸ÀÔÀÇ ½ºÆ®¸²À¸·Î ¹Ù²ãÁØ´Ù. 
-		// ¿¹¸¦µé¾î "1","2","3" À» °¡Áø ½ºÆ®¸²ÀÌ ÀÖ¾úÀ¸¸é mapToInt¸¦ Àû¿ëÇÏ¸é 1,2,3 À» °¡Áø ½ºÆ®¸²À¸·Î º¯È¯ ÇØÁØ´Ù.
-		names = Arrays.stream(fullName.split(" "))
-				.mapToInt(s -> getOrAdd.apply(s))
-				.toArray();
-	}
+  static List<String> strings = new ArrayList<>();
+  private int[] names;
+
+  public User2(String fullName) {
+    Function<String, Integer> getOrAdd = (String s) -> {
+      int idx = strings.indexOf(s);
+      if (idx != -1)
+        return idx;
+      else {
+        strings.add(s);
+        return strings.size() - 1;
+      }
+    };
+
+    // Streamï¿½ï¿½ ï¿½Ú¹ï¿½ 8ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½, ï¿½è¿­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò¸ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½
+    // ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½(ï¿½ï¿½ï¿½Ù½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Ýºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½
+    // mapXXX ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½Ø´ï¿½.
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "1","2","3" ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ mapToIntï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ 1,2,3 ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½Ø´ï¿½.
+    names = Arrays.stream(fullName.split(" ")).mapToInt(s -> getOrAdd.apply(s)).toArray();
+  }
 }
 
 // memory space optimization
@@ -44,8 +44,8 @@ class User2 {
 // use less memory by storing externally the data associated with similar
 // objects
 public class Flyweight {
-	public static void main(String[] args) {
-		User2 user1 = new User2("John Smith");
-		User2 user2 = new User2("Jane Smith");
-	}
+  public static void main(String[] args) {
+    User2 user1 = new User2("John Smith");
+    User2 user2 = new User2("Jane Smith");
+  }
 }

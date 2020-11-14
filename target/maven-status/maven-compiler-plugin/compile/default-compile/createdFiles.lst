@@ -1,0 +1,5 @@
+command\BankAccountCommand$1.class
+factory\Point$1.class
+singleton\InnerStaticSingleton$1.class
+interpreter\Interpreter$1.class
+interpreter\BinaryOperation$1.class
