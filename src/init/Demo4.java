@@ -41,9 +41,8 @@ class OldFunctionPrinter implements Machine {
   }
 }
 
-// �������� �ʴ� fax, scan ��ɿ� ���� interface �ϰ� �Ǹ� fax, scan ����� ��
-// �������� �ʴ��� ȥ���� �� �� ����.
-// interface �� ���� ���� ������ ��
+// 제공하지 않는 fax, scan 기능에 대해 interface 하게 되면 fax, scan 기능이 왜 동작하지 않는지 혼란이 올 수 있음.
+// interface 를 범주 마다 나눠야 함
 
 interface Printer {
   void print(Document d);
@@ -69,9 +68,7 @@ class Photocopier implements Printer, Scanner {
   }
 }
 
-// ���ָ��� interface �� �����µ� �������� ����� �ʿ�� �ϸ� implements �� ��� �߰��ؾ�
-// �ϴ°�
-
+// 범주마다 interface 를 나눴는데 여러가지 기능을 필요로 하면 implements 를 계속 추가해야 하는가
 interface MultiFunctionDevice extends Printer, Scanner {
 }
 

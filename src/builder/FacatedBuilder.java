@@ -1,7 +1,5 @@
 package builder;
 
-// object �� �����ؼ� multiple builder �� �ʿ��� ��
-
 class Person {
   public String streetAddress, postcode, city;
 

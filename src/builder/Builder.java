@@ -77,7 +77,7 @@ public class Builder {
     String hello = "hello";
     System.out.println("<p>" + hello + "</p>");
     String[] words = { "hello", "world" };
-    // �ϳ��� �±׸� ���̸� ��¹� ����� ��ٷӴ�.
+    // 하나씩 태그를 붙이면 출력문 만들기 까다롭다.
     System.out.println("<ul>\n" + "<li>" + words[0] + "</p>");
 
     StringBuilder sb = new StringBuilder();

@@ -37,7 +37,7 @@ class Square implements Shape {
   }
 }
 
-// dynamic decorator : ��Ÿ�� �� ���ο� Decorator���� �����ϱ� ����
+// dynamic decorator : 런타임 때 새로운 Decorator마다 빌드하기 때문
 /*
  * class ColoredShape implements Shape { private Shape shape; private String
  * color;

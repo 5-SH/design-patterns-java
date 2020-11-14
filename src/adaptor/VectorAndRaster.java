@@ -149,9 +149,8 @@ public class VectorAndRaster {
   private static final List<VectorObject> vectorObjects = new ArrayList<>(
       Arrays.asList(new VectorRectangle(1, 1, 10, 10), new VectorRectangle(3, 3, 6, 6)));
 
-  // ���� �׸��� API �� �Ʒ��� ���� drawPoint �� �־����� �ȴٸ� Line�� Point�� Adapt
-  // ����� �Ѵ�.
-  // VectorObject�� Line���� �����Ǿ� �ֱ� ����
+  // 선을 그리는 API 가 아래와 같이 drawPoint 만 주어지게 된다면 Line을 Point로 Adapt 해줘야 한다.
+  // VectorObject는 Line으로 구성되어 있기 때문
   public static void drawPoint(Point p) {
     System.out.print(".");
   }
@@ -168,7 +167,7 @@ public class VectorAndRaster {
 
   public static void main(String[] args) {
     draw();
-    // cache ���� adaptor�� �����ϸ� ���� line�� �� �� �׸��� �ߺ��� �߻��Ѵ�.
+    // cache 없이 adaptor를 구현하면 같은 line을 두 번 그리는 중복이 발생한다.
     draw();
   }
 }

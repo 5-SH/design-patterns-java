@@ -5,19 +5,19 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-// ��ɰ� ������ ������ Ŭ������ �����ؼ� ���θ� �и��ϴ� ���
-// ����� �߰��� ����, ������ ������ ����
-// ���� Ŭ������ ��� Ŭ������ ������ ���� Ŭ������ method�� ��� Ŭ������ �����ؼ� ���
-// Cartesian product complexity explosion �� ���´�
-// entity explosion �� ���Ѵ�
-// implementation ���� interface decouple �ϴ� ��Ŀ����
+// 기능과 구현을 별도의 클래스로 정의해서 서로를 분리하는 방법
+// 상속은 견고한 결합, 위임은 느슨한 결합
+// 구현 클래스와 기능 클래스를 나누고 구현 클래스의 method를 기능 클래스에 위임해서 사용
+// Cartesian product complexity explosion 을 막는다
+// entity explosion 을 피한다
+// implementation 에서 interface decouple 하는 메커니즘
 
-// (��� Ŭ����) Shape -> Circle, Square
-// (���� Ŭ����) Rendering -> Vector, Raster
+// (기능 클래스) Shape -> Circle, Square
+// (구현 클래스) Rendering -> Vector, Raster
 
-// bridge ���� �����ϸ� 4���� Ŭ������ �ʿ�
+// bridge 없이 구성하면 4개의 클래스가 필요
 // VectorCircleRenderer, VectorSquareRenderer....
-// Rendering �� �߰��Ǹ� 8�� �ʿ� -> Bridge ������ �ʿ�
+// Rendering 이 추가되면 8개 필요 -> Bridge 패턴이 필요
 
 interface Renderer {
   void renderCircle(float radius);
@@ -72,8 +72,8 @@ class Circle extends Shape {
 
 }
 
-// Google Guice �� �̿��ؼ� protected Renderer renderer bridge ��ſ�
-// Dependency Injection ���� ó���ϴ� ���
+// Google Guice 를 이용해서 protected Renderer renderer bridge 대신에
+// Dependency Injection 으로 처리하는 방법
 class ShapeModule extends AbstractModule {
   @Override
   protected void configure() {
