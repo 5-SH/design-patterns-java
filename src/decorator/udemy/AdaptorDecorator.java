@@ -1,4 +1,4 @@
-package decorator;
+package decorator.udemy;
 
 import java.util.stream.IntStream;
 

@@ -1,4 +1,4 @@
-package decorator;
+package decorator.udemy;
 
 class Bird {
 	public int age;

@@ -1,4 +1,4 @@
-package decorator;
+package decorator.udemy;
 
 import com.google.common.base.Supplier;
 
@@ -50,7 +50,7 @@ class Square implements Shape {
  * @Override public String info() { return shape.info() + " has the color " +
  * color; } }
  */
-// static decorator : compile Ÿ�� �� �� ����
+// static decorator : compile 타임 때 형 지정
 class ColoredShape<T extends Shape> implements Shape {
   private Shape shape;
   private String color;
