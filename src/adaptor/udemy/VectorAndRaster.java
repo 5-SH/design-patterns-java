@@ -1,4 +1,4 @@
-package adaptor;
+package adaptor.udemy;
 
 import java.util.ArrayList;
 import java.util.Arrays;

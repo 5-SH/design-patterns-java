@@ -1,4 +1,4 @@
-package adaptor;
+package adaptor.udemy;
 
 class Square {
 	public int side;
