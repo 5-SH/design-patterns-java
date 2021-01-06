@@ -1,9 +1,7 @@
 package proxy.headfirst.virtual;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.net.URL;
 
 public class ImageProxy implements Icon {
@@ -12,48 +10,70 @@ public class ImageProxy implements Icon {
   Thread retrievalThread;
   boolean retrieving = false;
 
-  public ImageProxy(URL url) { imageURL = url; }
+  State state;
+  State unloadState;
+  State loadState;
+
+  public ImageProxy(URL url) {
+    imageURL = url;
+    this.unloadState = new UnloadState(this);
+    this.loadState = new LoadState(this);
+
+    this.state = unloadState;
+  }
 
   @Override
   public void paintIcon(Component c, Graphics g, int x, int y) {
-    if (imageIcon != null) {
-      imageIcon.paintIcon(c, g, x, y);
-    } else {
-      g.drawString("Loading CD cover , please wait...", x + 300, y + 190);
-      if (!retrieving) {
-        retrieving = true;
-
-        retrievalThread = new Thread(new Runnable() {
-          @Override
-          public void run() {
-            try {
-              imageIcon = new ImageIcon(imageURL, "Alphabet");
-              c.repaint();
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          }
-        });
-
-        retrievalThread.start();
-      }
-    }
+    state.paintIcon(c, g, x, y);
   }
 
   @Override
   public int getIconWidth() {
-    if (imageIcon != null) {
-      return imageIcon.getIconWidth();
-    }
-
-    return 800;
+    return state.getIconWidth();
   }
 
   @Override
   public int getIconHeight() {
-    if (imageIcon != null) {
-      return imageIcon.getIconHeight();
-    }
-    return 600;
+    return state.getIconHeight();
+  }
+
+  public void setState(State state) {
+    this.state = state;
+  }
+
+  public State getState() {
+    return this.state;
+  }
+
+  public State getLoadState() {
+    return loadState;
+  }
+
+  public ImageIcon getImageIcon() {
+    return this.imageIcon;
+  }
+
+  public void setRetrieving(boolean retrieving) {
+    this.retrieving = retrieving;
+  }
+
+  public boolean getRetrieving() {
+    return this.retrieving;
+  }
+
+  public void setRetrievalThread(Thread retrievalThread) {
+    this.retrievalThread = retrievalThread;
+  }
+
+  public Thread getRetrievalThread() {
+    return retrievalThread;
+  }
+
+  public URL getImageURL() {
+    return imageURL;
+  }
+
+  public void setImageIcon(ImageIcon imageIcon) {
+    this.imageIcon = imageIcon;
   }
 }
