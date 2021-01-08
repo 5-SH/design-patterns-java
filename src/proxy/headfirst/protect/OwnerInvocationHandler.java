@@ -17,7 +17,7 @@ public class OwnerInvocationHandler implements InvocationHandler {
       if (method.getName().startsWith("get")) {
         return method.invoke(person, args);
       } else if (method.getName().equals("setHotOrNotRating")) {
-        return new IllegalAccessException();
+        throw new IllegalAccessException();
       } else if (method.getName().startsWith("set")) {
         return method.invoke(person, args);
       }
