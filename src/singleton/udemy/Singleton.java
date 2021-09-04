@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 
 class BasicSingleton implements Serializable {
   private BasicSingleton() {
@@ -73,5 +74,17 @@ public class Singleton {
     // serialize -> deserialize 한 값을 받아오면 singleton 이 안됨
     // readResolve() method 로 해결
     System.out.println(singleton2.getValue());
+
+    BasicSingleton newInstance = null;
+    Constructor[] constructors = BasicSingleton.class.getDeclaredConstructors();
+    for (Constructor constructor : constructors) {
+      constructor.setAccessible(true);
+      newInstance = (BasicSingleton) constructor.newInstance();
+      break;
+    }
+
+    System.out.println(singleton == newInstance);
+    System.out.println(singleton.getValue());
+    System.out.println(newInstance.getValue());
   }
 }
